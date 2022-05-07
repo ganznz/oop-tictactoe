@@ -29,8 +29,4 @@ class Player
     end
     chosen_tile.to_s
   end
-
-  # def player_instance_count_zero?
-  #   @@player_instances.length.zero?
-  # end
 end
