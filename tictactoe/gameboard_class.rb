@@ -5,7 +5,7 @@ require_relative 'string_class'
 
 # the board in which the game is displayed on
 class Gameboard
-  include Game_text
+  include GameText
   attr_accessor :tiles_hash
 
   def initialize
@@ -13,8 +13,8 @@ class Gameboard
     (1..9).each { |num| tiles_hash["tile#{num}"] = num.to_s }
   end
 
-  def display_board(player_instance = nil)
-    update_board(player_instance) unless player_instance.nil?
+  def display_board(plr_instance = nil)
+    update_board(plr_instance) unless plr_instance.nil?
 
     row1 = " #{tiles_hash['tile1']} | #{tiles_hash['tile2']} | #{tiles_hash['tile3']} "
     row2 = " #{tiles_hash['tile4']} | #{tiles_hash['tile5']} | #{tiles_hash['tile6']} "
@@ -25,16 +25,16 @@ class Gameboard
 
   private
 
-  def update_board(player_instance)
-    player_selected_tile = player_instance.choose_tile
+  def update_board(plr_instance)
+    plr_selected_tile = plr_instance.choose_tile
 
     # if selected tile is already occupied
-    while @tiles_hash["tile#{player_selected_tile}"] != player_selected_tile
+    while @tiles_hash["tile#{plr_selected_tile}"] != plr_selected_tile
       puts tile_already_selected_text
-      player_selected_tile = player_instance.choose_tile
+      plr_selected_tile = plr_instance.choose_tile
     end
 
     # updates selected tile
-    @tiles_hash["tile#{player_selected_tile}"] = player_instance.gameboard_character.colour
+    @tiles_hash["tile#{plr_selected_tile}"] = plr_instance.gameboard_character
   end
 end
