@@ -4,16 +4,20 @@ require_relative 'game_text_module'
 
 # represents both Player instances
 class Player
-  include Game_text
-  attr_reader :name, :player_colours
-  attr_accessor :gameboard_character
+  include GameText
+  attr_reader :name
+  attr_accessor :gameboard_character, :colour
 
-  @@player_colours = "%w[green red]"
+  @@player_colours = %w[green red]
+  @@player_instances = []
 
   def initialize(name, gameboard_character)
     @name = name
-    # @colour = player_colours.pop(0)
+    self.colour = @@player_colours[0]
+    @@player_colours.shift # determines colour of next Player instance
     self.gameboard_character = gameboard_character
+    @@player_instances.push(self)
+    puts @@player_instances
   end
 
   def choose_tile
@@ -25,4 +29,8 @@ class Player
     end
     chosen_tile.to_s
   end
+
+  # def player_instance_count_zero?
+  #   @@player_instances.length.zero?
+  # end
 end
