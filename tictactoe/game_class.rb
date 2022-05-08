@@ -10,30 +10,53 @@ class Game
 
   def initialize; end
 
-  def define_player_name(plr_no, plr_one = nil)
+  def define_player_name(plr_no, plr1 = nil)
     puts player_name_selection_text(plr_no)
     name = gets.chomp
+    valid_name?(name, plr1)
+  end
 
-    until name[0].match('^[a-zA-Z]*$') && (name.length >= 3 && name.length <= 9)
-      puts player_name_first_char_not_alpha_text unless name[0].match('^[a-zA-Z]*$')
-      unless name.length >= 3 && name.length <= 9
-        puts player_name_too_short_text unless name.length >= 3
-        puts player_name_too_long_text unless name.length <= 9
-      end
-      name = gets.chomp
+  def define_player_gameboard_char(plr_name, plr1 = nil)
+    puts player_marker_selection_text(plr_name)
+    char = gets.chomp
+    is_valid_length = char.length == 1
+    until is_valid_length && !same_gameboard_char_as_plr_one?(char, plr1)
+      puts player_marker_not_one_char_text unless is_valid_length
+      puts player_marker_taken_text if same_gameboard_char_as_plr_one?(char, plr1)
+      char = gets.chomp
+      is_valid_length = char.length == 1
     end
+    char
+  end
 
-    (puts player_name_taken_text while name == plr1.name) unless plr1.nil?
+  private
+
+  def valid_name?(name, plr1)
+    is_valid_first_char = name[0].match('^[a-zA-Z]*$')
+    is_valid_length = name.length >= 3 && name.length <= 15
+
+    until is_valid_first_char && is_valid_length && !same_name_as_plr_one?(name, plr1)
+      puts player_name_first_char_not_alpha_text unless is_valid_first_char
+      puts player_name_invalid_length unless is_valid_length
+      puts player_name_taken_text if same_name_as_plr_one?(name, plr1)
+
+      # updates values for next loop iteration
+      name = gets.chomp
+      is_valid_first_char = name[0].match('^[a-zA-Z]*$')
+      is_valid_length = name.length >= 3 && name.length <= 15
+    end
     name
   end
 
-  def define_player_gameboard_char(plr_name)
-    puts player_marker_selection_text(plr_name)
-    char = gets.chomp
-    until char.length == 1
-      puts player_marker_not_one_char_text
-      char = gets.chomp
-    end
-    char
+  def same_name_as_plr_one?(name, plr1)
+    return false if plr1.nil? # returns false if plr1 is non-existent
+
+    name == plr1.name
+  end
+
+  def same_gameboard_char_as_plr_one?(char, plr1)
+    return false if plr1.nil? # returns false if plr1 is non-existent
+
+    char == plr1.gameboard_character
   end
 end
