@@ -17,4 +17,3 @@ player2 = Player.new(plr2_name, plr2_gameboard_char)
 
 game_board = Gameboard.new
 game_board.display_board
-game_board.display_board(player1)
