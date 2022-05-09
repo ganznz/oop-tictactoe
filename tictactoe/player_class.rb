@@ -17,11 +17,10 @@ class Player
     @@player_colours.shift # determines colour of next Player instance
     self.gameboard_character = gameboard_character
     @@player_instances.push(self)
-    puts @@player_instances
   end
 
   def choose_tile
-    puts "#{name}, choose a tile between 1-9"
+    puts choose_tile_text(name)
     chosen_tile = gets.chomp.to_i
     while chosen_tile < 1 || chosen_tile > 9
       puts invalid_input_text
