@@ -25,7 +25,7 @@ module GameText
   end
 
   def player_name_invalid_length
-    "\s\s >>Please input a name between 3 and 15 characters".red
+    "\s\s >>Please input a name between 3 and 15 characters.".red
   end
 
   def player_name_taken_text
@@ -42,5 +42,9 @@ module GameText
 
   def tile_already_selected_text
     "\s\s >>This tile is taken, select another one.".red
+  end
+
+  def choose_tile_text(plr_name)
+    "#{plr_name}, choose a tile between 1-9.".green
   end
 end
