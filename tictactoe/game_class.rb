@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'game_text_module'
 require_relative 'string_class'
 require_relative 'player_class'
+require_relative 'gameboard_class'
+require_relative 'game_text_module'
 
 # game functions and logic
 class Game
@@ -27,6 +28,10 @@ class Game
       is_valid_length = char.length == 1
     end
     char
+  end
+
+  def end_game(gameboard_instance)
+    gameboard_instance.winning_combos_met?
   end
 
   private
