@@ -8,7 +8,7 @@ require_relative 'game_text_module'
 # the board in which the game is displayed on
 class Gameboard
   include GameText
-  attr_accessor :tiles_hash
+  attr_accessor :tiles_hash, :action_history
 
   @@winning_combinations = [
     [1, 2, 3],
@@ -24,16 +24,21 @@ class Gameboard
   def initialize
     @tiles_hash = {}
     (1..9).each { |num| tiles_hash["tile#{num}"] = num.to_s }
+    # @player_action_history = []
+    @plr_turn = 0
   end
 
   def display_board(plr_instance = nil)
-    update_board(plr_instance) unless plr_instance.nil?
+    update_board(plr_instance)
 
     row1 = " #{tiles_hash['tile1']} | #{tiles_hash['tile2']} | #{tiles_hash['tile3']} "
     row2 = " #{tiles_hash['tile4']} | #{tiles_hash['tile5']} | #{tiles_hash['tile6']} "
     row3 = " #{tiles_hash['tile7']} | #{tiles_hash['tile8']} | #{tiles_hash['tile9']} "
     row_separator = '---+---+---'
     puts "#{row1}\n#{row_separator}\n#{row2}\n#{row_separator}\n#{row3}"
+
+    puts won_game_text(plr_instance.name) if winning_combos_met?
+    puts gameboard_full_text if gameboard_full?
   end
 
   def winning_combos_met?
@@ -44,11 +49,24 @@ class Gameboard
     player_instances.each do |player|
       player_marker = player.gameboard_character
       winning_combos.each do |combo_list|
-        scan_result = combo_list.all? {|num| tiles_hash["tile#{num}"] == player_marker}
+        scan_result = combo_list.all? { |num| tiles_hash["tile#{num}"] == player_marker }
         winning_combo_met = true if scan_result
       end
     end
     winning_combo_met
+  end
+
+  def gameboard_full?
+    !winning_combos_met? && (1..9).all? { |num| tiles_hash["tile#{num}"] != num.to_s }
+  end
+
+  def determine_next_player
+    player_instances = Player.class_eval '@@player_instances'
+    plr_index = @plr_turn % 2
+    @plr_turn += 1
+
+    # determines what player makes the next move
+    player_instances[plr_index]
   end
 
   private
