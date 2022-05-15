@@ -47,4 +47,21 @@ module GameText
   def choose_tile_text(plr_name)
     "#{plr_name}, choose a tile between 1-9.".green
   end
+
+  def display_board_placeholder_text
+    row_separator = '---+---+---'
+    puts ' 1 | 2 | 3 '
+    puts row_separator
+    puts ' 4 | 5 | 6 '
+    puts row_separator
+    puts ' 7 | 8 | 9 '
+  end
+
+  def won_game_text(plr_name)
+    "#{plr_name} has won the game!"
+  end
+
+  def gameboard_full_text
+    'Tie! Gameboard is full.'
+  end
 end
