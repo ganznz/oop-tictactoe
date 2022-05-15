@@ -30,8 +30,9 @@ class Game
     char
   end
 
-  def end_game(gameboard_instance)
-    gameboard_instance.winning_combos_met?
+  def end_game?(gameboard_instance)
+    return true if gameboard_instance.winning_combos_met?
+    return true if gameboard_instance.gameboard_full?
   end
 
   private
@@ -56,12 +57,11 @@ class Game
   def same_name_as_plr_one?(name, plr1)
     return false if plr1.nil? # returns false if plr1 is non-existent
 
-    name == plr1.name
+    name.downcase == plr1.name.downcase
   end
 
   def same_gameboard_char_as_plr_one?(char, plr1)
     return false if plr1.nil? # returns false if plr1 is non-existent
-
     char == plr1.gameboard_character
   end
 end
