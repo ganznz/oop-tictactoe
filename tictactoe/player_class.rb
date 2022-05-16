@@ -10,13 +10,15 @@ class Player
 
   @@player_colours = %w[green red]
   @@player_instances = []
+  @@player_instance_count = 0
 
   def initialize(name, gameboard_character)
     @name = name
-    self.colour = @@player_colours[0]
-    @@player_colours.shift # determines colour of next Player instance
+    self.colour = @@player_colours[@@player_instance_count % 2]
+    # @@player_colours.shift # determines colour of next Player instance
     self.gameboard_character = gameboard_character
-    @@player_instances.push(self)
+    @@player_instances.unshift(self)
+    @@player_instance_count += 1
   end
 
   def choose_tile
