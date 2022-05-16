@@ -25,13 +25,15 @@ class Gameboard
     @tiles_hash = {}
     (1..9).each { |num| tiles_hash["tile#{num}"] = num.to_s }
     # @player_action_history = []
-    @plr_turn = 0
+    @plr_turn = 1
+    system 'clear' # clears console after player initialisations
   end
 
   def display_board(plr_instance = nil)
     update_board(plr_instance)
+    system 'clear' # clears console before showing updated board
 
-    row1 = " #{tiles_hash['tile1']} | #{tiles_hash['tile2']} | #{tiles_hash['tile3']} "
+    row1 = "\n #{tiles_hash['tile1']} | #{tiles_hash['tile2']} | #{tiles_hash['tile3']} "
     row2 = " #{tiles_hash['tile4']} | #{tiles_hash['tile5']} | #{tiles_hash['tile6']} "
     row3 = " #{tiles_hash['tile7']} | #{tiles_hash['tile8']} | #{tiles_hash['tile9']} "
     row_separator = '---+---+---'
@@ -47,7 +49,8 @@ class Gameboard
     winning_combo_met = false
 
     player_instances.each do |player|
-      player_marker = player.gameboard_character
+      coloured_characters = [player.gameboard_character.green, player.gameboard_character.red]
+      player_marker = coloured_characters[@plr_turn % 2]
       winning_combos.each do |combo_list|
         scan_result = combo_list.all? { |num| tiles_hash["tile#{num}"] == player_marker }
         winning_combo_met = true if scan_result
@@ -73,6 +76,7 @@ class Gameboard
 
   def update_board(plr_instance)
     plr_selected_tile = plr_instance.choose_tile
+    coloured_characters = [plr_instance.gameboard_character.green, plr_instance.gameboard_character.red]
 
     # if selected tile is already occupied
     while @tiles_hash["tile#{plr_selected_tile}"] != plr_selected_tile
@@ -81,6 +85,6 @@ class Gameboard
     end
 
     # updates selected tile
-    @tiles_hash["tile#{plr_selected_tile}"] = plr_instance.gameboard_character
+    @tiles_hash["tile#{plr_selected_tile}"] = coloured_characters[@plr_turn % 2]
   end
 end
