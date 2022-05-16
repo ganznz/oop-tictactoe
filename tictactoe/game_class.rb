@@ -21,11 +21,14 @@ class Game
     puts player_marker_selection_text(plr_name)
     char = gets.chomp
     is_valid_length = char.length == 1
-    until is_valid_length && !same_gameboard_char_as_plr_one?(char, plr1)
+    is_number = char.ord >= 49 && char.ord <= 57
+    until is_valid_length && !is_number && !same_gameboard_char_as_plr_one?(char, plr1)
       puts player_marker_not_one_char_text unless is_valid_length
+      puts player_marker_cannot_be_num_text if is_number
       puts player_marker_taken_text if same_gameboard_char_as_plr_one?(char, plr1)
       char = gets.chomp
       is_valid_length = char.length == 1
+      is_number = char.ord >= 49 && char.ord <= 57
     end
     char
   end
@@ -33,6 +36,18 @@ class Game
   def end_game?(gameboard_instance)
     return true if gameboard_instance.winning_combos_met?
     return true if gameboard_instance.gameboard_full?
+  end
+
+  def play_another_game?
+    puts play_another_game_text
+    player_input = gets.chomp.downcase
+    until %w[y n].include?(player_input)
+      puts invalid_replay_game_input_text
+      player_input = gets.chomp.downcase
+    end
+
+    # return bool value to determine whether another game gets played or not
+    player_input == 'y'
   end
 
   private
@@ -62,6 +77,7 @@ class Game
 
   def same_gameboard_char_as_plr_one?(char, plr1)
     return false if plr1.nil? # returns false if plr1 is non-existent
+
     char == plr1.gameboard_character
   end
 end
