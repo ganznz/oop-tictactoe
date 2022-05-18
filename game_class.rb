@@ -20,14 +20,14 @@ class Game
     puts player_marker_selection_text(plr_name)
     char = gets.chomp
     is_valid_length = char.length == 1
-    is_number = char.ord >= 49 && char.ord <= 57
+    is_number = char.length.positive? ? char.ord >= 49 && char.ord <= 57 : false
     until is_valid_length && !is_number && !same_gameboard_char_as_plr_one?(char)
       puts player_marker_not_one_char_text unless is_valid_length
       puts player_marker_cannot_be_num_text if is_number
       puts player_marker_taken_text if same_gameboard_char_as_plr_one?(char)
       char = gets.chomp
       is_valid_length = char.length == 1
-      is_number = char.ord >= 49 && char.ord <= 57
+      is_number = char.length.positive? ? char.ord >= 49 && char.ord <= 57 : false
     end
     char
   end
