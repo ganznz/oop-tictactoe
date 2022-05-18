@@ -52,17 +52,13 @@ class Game
   private
 
   def valid_name?(name)
-    is_valid_first_char = name[0].match('^[a-zA-Z]*$')
     is_valid_length = name.length >= 3 && name.length <= 15
-
-    until is_valid_first_char && is_valid_length && !same_name_as_plr_one?(name)
-      puts player_name_first_char_not_alpha_text unless is_valid_first_char
+    until is_valid_length && !same_name_as_plr_one?(name)
       puts player_name_invalid_length unless is_valid_length
       puts player_name_taken_text if same_name_as_plr_one?(name)
 
       # updates values for next loop iteration
       name = gets.chomp
-      is_valid_first_char = name[0].match('^[a-zA-Z]*$')
       is_valid_length = name.length >= 3 && name.length <= 15
     end
     name
